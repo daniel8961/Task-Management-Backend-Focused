@@ -1,4 +1,3 @@
-import dotenv from './dotenv';
 
 // Database Connection
 const { MongoClient } = require('mongodb');
