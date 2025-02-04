@@ -18,6 +18,7 @@ export default taskModel = new mongoose.Schema({
     },
     deadline: {
         type: Date,
+        required: false,
     }
 }, { Timestamp: true });
 
