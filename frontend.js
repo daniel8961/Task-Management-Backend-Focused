@@ -1,3 +1,4 @@
+// Connect to Backend server
 document.addEventListener("DOMContentLoaded", async () => {
     const taskList = document.getElementById("task-list");
 
