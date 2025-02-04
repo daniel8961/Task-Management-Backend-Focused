@@ -1,35 +1,22 @@
-// Task.js
-require('dotenv').config();
+document.addEventListener("DOMContentLoaded", async () => {
+    const taskList = document.getElementById("task-list");
 
-// Database Connection
-const { MongoClient } = require('mongodb');
-const url = process.env.MongoDB_Connection_String;
-
-const client = new MongoClient(url);
-
-async function dbConnection() {
     try {
-        await client.connect();
-        console.log("Connected to the database");
+        const response = await fetch("http://localhost:5000/api/tasks");
+        const tasks = await response.json();
 
-        const db = client.db('task_management');
-        const dbCollection = db.collection('TMJ');
-
-        const newUser = { username: 'admin', password: 123456 };
-        const result = await dbCollection.insertOne(newUser);
-
+        tasks.forEach(task => {
+            const li = document.createElement("li");
+            li.textContent = `${task.title} - ${task.status}`;
+            taskList.appendChild(li);
+        });
     } catch (error) {
-        console.error("Error: ", error);
-    } finally {
-        await client.close();
+        console.error("Error fetching tasks:", error);
     }
-};
+});
 
-// Authenticate User Data for Sign up
 
-// Authenticate User Data for Login 
-
-// Verify Form Data
+// Verify User Auth Form Data
 const usernameField = document.getElementById('username');
 const usernameMsgField = document.getElementById('username-error');
 usernameField.addEventListener('input', (e) => {
@@ -58,6 +45,3 @@ passwordField.addEventListener('input', e => {
         passwordMsgField.style.color = 'red';
     }
 });
-
-
-
