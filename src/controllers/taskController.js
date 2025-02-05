@@ -1,14 +1,14 @@
 // Manages CRUD operations for Tasks
-import taskModel from '../models/Task';
 import express from 'express';
 import bodyParser from 'body-parser';
-import Task from '../models/Task';
+
+const taskModel = require('../models/Task');
 
 const app = express();
+app.use(bodyParser.json());
 
 const PORT = 5000;
 
-app.use(bodyParser.json());
 
 // Create new task
 app.post('/tasks', async (req, res) => {
@@ -31,7 +31,7 @@ app.post('/tasks', async (req, res) => {
 // Read/Load all tasks 
 app.get('/tasks', async (req, res) => {
     try {
-        const tasks = await Task.find();
+        const tasks = await taskModel.find();
         res.status(200).json(tasks);
     } catch (err) {
         res.status(400).json({error: err.message});
@@ -51,7 +51,7 @@ app.get('/tasks/:id', async (req, res) => {
 // Update task
 app.put('/tasks/:id', async (req, res) => {
     try {
-        const updatedTask = await Task.findByIdAndUpdate(
+        const updatedTask = await taskModel.findByIdAndUpdate(
             req.params.id,
             {
                 title: req.body.title,
@@ -75,7 +75,7 @@ app.put('/tasks/:id', async (req, res) => {
 // Delete task
 app.delete('/tasks/:id', async (req, res) => {
     try {
-        const deletedTask = await Task.findByIdAndDelete(req.params.id);
+        const deletedTask = await taskModel.findByIdAndDelete(req.params.id);
 
         if (!deletedTask) {
             return res.status(404).json({ message: 'Task not found' });
