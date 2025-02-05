@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const TaskSchema = new mongoose.Schema({
+const SubtaskSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
@@ -14,11 +14,7 @@ const TaskSchema = new mongoose.Schema({
         enum: ['low', 'medium', 'high'],
         default: 'medium',
     },
-    deadline: {
-        type: Date,
-        required: false,
-    }
 }, { timestamps: true });
 
-const taskModel = mongoose.model('Task', TaskSchema);
-module.exports = taskModel;
+const subtaskModel = mongoose.model('Subtask', SubtaskSchema);
+module.exports = subtaskModel;
