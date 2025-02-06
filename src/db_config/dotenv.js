@@ -1,8 +1,8 @@
-import dotenv from 'dotenv';
+const dotenv = require('dotenv');
 
 dotenv.config();
 
-export default {
+module.exports = {
     PORT: process.env.PORT || 3000,
-    MONGO_URI: process.env.MongoDB_Connection_String,
+    MONGO_URI: process.env.MONGODB_URI,
 };

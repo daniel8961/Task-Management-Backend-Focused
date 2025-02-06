@@ -1,56 +1,53 @@
-import { client, dbConnection } from '../db_config/db.js';
+const userModel = require('../models/User.js');
 
-// Authenticate User Data for Sign up
-async function registerUser(username, password) {
+
+// Register User
+const registerUser = async (req, res) => {
     try {
-        const db = await dbConnection();
-        const users = db.collection('users');
+        const { username, password } = req.body;
 
-        // check if user is already registered
-        const isExisted = await users.findOne({ username });
-        if(isExisted) {
-            return { success: false, message: 'Username is taken' };
+        // Check if user already exists
+        const isExisted = await userModel.findOne({ username });
+        if (isExisted) {
+            return res.status(400).json({ success: false, message: 'Username is taken' });
         }
 
-        // Insert new user
-        const newUser = await users.insertOne({ 
-            username,
-            password,
-            createdAt: new Date(),
-        });
-        return { 
-            success: true, 
-            message: "Registration successfully.",
-            userId: newUser.insertedId,
-        };
-        
-    } catch (error) {
-        return { success: false, message: 'Registration failed' };
-    }
-}
+        // Create new user (Password is automatically hashed due to schema pre-save middleware)
+        const newUser = new userModel({ username, password });
+        await newUser.save();
 
-// Authenticate User Data for Login 
-async function loginUser(username, password) {
+        res.status(201).json({ success: true, message: "Registration successful." });
+
+    } catch (error) {
+        console.error("Registration Error:", error);
+        res.status(500).json({ success: false, message: 'Registration failed' });
+    }
+};
+
+// Login User
+const loginUser = async (req, res) => {
     try {
-        const db = await dbConnection();
-        const users = db.collection('users');
+        const { username, password } = req.body;
 
         // Find user by username
-        const user = await users.findOne({ username });
-        if(!user) {
-            return {success: false, message: "User not found"};
+        const user = await userModel.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
         }
 
-        // Compare password
-        if(user.password !== password) {
-            return {success: false, message: "Incorrect password"};
+        // Compare input password with hashed password in DB
+        const isMatch = await user.comparePassword(password);
+        if (!isMatch) {
+            return res.status(400).json({ success: false, message: "Incorrect password" });
         }
 
-        // If both username and password are matches
-        return {success: true, message: "Login successful", user,};
+        res.status(200).json({ success: true, message: "Login successful", user });
+
     } catch (error) {
-        return {success: false, message: "Login failed" };
+        console.error("Login Error:", error);
+        res.status(500).json({ success: false, message: "Login failed" });
     }
-}
+};
 
 
+export { registerUser, loginUser };
