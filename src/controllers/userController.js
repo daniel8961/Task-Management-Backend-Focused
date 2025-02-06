@@ -1,12 +1,22 @@
+import joi from 'joi';
 const userModel = require('../models/User.js');
 
+const userSchema = Joi.object({
+    username: joi.string().alphanum().min(3).max(30).required(),
+    password: joi.string().min(8).required(),
+});
 
 // Register User
 const registerUser = async (req, res) => {
+    // validate user inputs
+    const { error } = userSchema.validate(req.body);
+    if (error) {
+        return res.status(400).json({ success: false, message: error.details[0].message });    
+    }
     try {
         const { username, password } = req.body;
 
-        // Check if user already exists
+        // Check if user alreadxy exists
         const isExisted = await userModel.findOne({ username });
         if (isExisted) {
             return res.status(400).json({ success: false, message: 'Username is taken' });
@@ -30,7 +40,7 @@ const loginUser = async (req, res) => {
         const { username, password } = req.body;
 
         // Find user by username
-        const user = await userModel.findOne({ username });
+        const user = await userModel.findOne({ username: String(req.body.username) });
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found" });
         }
