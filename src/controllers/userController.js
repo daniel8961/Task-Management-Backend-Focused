@@ -1,5 +1,9 @@
 import joi from 'joi';
+import jwt from 'jsonwebtoken';
+const dotenv = require('dotenv');
 const userModel = require('../models/User.js');
+
+const SECRET_KEY = dotenv.JWT_SECRET;
 
 const userSchema = Joi.object({
     username: joi.string().alphanum().min(3).max(30).required(),
@@ -17,7 +21,7 @@ const registerUser = async (req, res) => {
         const { username, password } = req.body;
 
         // Check if user alreadxy exists
-        const isExisted = await userModel.findOne({ username });
+        const isExisted = await userModel.findOne({ username: String(req.body.username) });
         if (isExisted) {
             return res.status(400).json({ success: false, message: 'Username is taken' });
         }
@@ -26,7 +30,10 @@ const registerUser = async (req, res) => {
         const newUser = new userModel({ username, password });
         await newUser.save();
 
-        res.status(201).json({ success: true, message: "Registration successful." });
+        // Generate JWT token immediately after registration and login right after signing up
+        const token = jwt.sign({ _id: newUser._id }, SECRET_KEY, { expiresIn: '1h' });
+
+        res.status(201).json({ success: true, message: "Registration successful.", token });
 
     } catch (error) {
         console.error("Registration Error:", error);
@@ -51,7 +58,11 @@ const loginUser = async (req, res) => {
             return res.status(400).json({ success: false, message: "Incorrect password" });
         }
 
-        res.status(200).json({ success: true, message: "Login successful", user });
+        // Generate JWT token
+        const token = jwt.sign({ _id: user._id }, SECRET_KEY, { expiresIn: '1h' });
+        const { password: _, ...userWithoutPassword } = user.toObject();
+
+        res.status(200).json({ success: true, message: "Login successful", token, user:userWithoutPassword });
 
     } catch (error) {
         console.error("Login Error:", error);

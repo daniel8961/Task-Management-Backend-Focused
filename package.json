@@ -5,7 +5,9 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "joi": "^17.13.3",
-    "mongodb": "6.12"
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "6.12",
+    "socket.io": "^4.8.1"
   },
   "name": "task-management",
   "version": "1.0.0",
