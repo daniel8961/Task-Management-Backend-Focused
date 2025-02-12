@@ -5,7 +5,7 @@ const userModel = require('../models/User.js');
 
 const SECRET_KEY = dotenv.JWT_SECRET;
 
-const userSchema = Joi.object({
+const userSchema = joi.object({
     username: joi.string().alphanum().min(3).max(30).required(),
     password: joi.string().min(8).required(),
 });
