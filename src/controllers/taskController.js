@@ -2,17 +2,23 @@
 const taskModel = require('../models/Task');
 import mongoose from 'mongoose';
 import { io } from '../server.js';
+import joi from 'joi';
 
+
+const taskSchema = joi.object({
+    title: joi.string().min(1).max(300).required(),
+    status: joi.boolean().optional(),
+    priority: joi.string().valid('low', 'medium', 'high').optional(),
+    deadline: joi.date().optional()
+});
 
 // Create new task
 const createTask = async (req, res) => {
+    const { error } = taskSchema.validate(req.body);
+    if (error) return res.status(400).json({ message: error.details[0].message });
+
     try {
-        const newTask = new taskModel({
-            title: req.body.title,
-            status: req.body.status,
-            priority: req.body.priority,
-            deadline: req.body.deadline
-        });
+        const newTask = new taskModel(req.body);
         // saved new task to MongoDB
         const savedTask = await newTask.save();
 
@@ -53,6 +59,13 @@ const readTaskByID = async (req, res) => {
 
 // Update task
 const updateTask = async (req, res) => {
+    // Validate Update input and ID
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({ message: 'Invalid Task ID' });
+    }
+    const { error } = taskSchema.validate(req.body);
+    if (error) return res.status(400).json({ message: error.details[0].message });
+
     try {
         const updatedTask = await taskModel.findByIdAndUpdate(
             req.params.id,
@@ -79,6 +92,11 @@ const updateTask = async (req, res) => {
 
 // Delete task
 const deleteTask = async (req, res) => {
+    // Validate Task ID
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({ message: 'Invalid Task ID' });
+    }
+
     try {
         const deletedTask = await taskModel.findByIdAndDelete(req.params.id);
         if (!deletedTask) {
@@ -86,7 +104,7 @@ const deleteTask = async (req, res) => {
         }
 
         // Emit delete event to all connected clients
-        io.emit('taskDeleted', deletedTask);
+        io.emit('taskDeleted', { id: req.params.id });
 
         res.status(200).json({ message: 'Task deleted' });
     } catch (err) {
