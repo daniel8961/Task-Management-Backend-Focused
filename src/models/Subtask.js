@@ -14,6 +14,10 @@ const SubtaskSchema = new mongoose.Schema({
         enum: ['low', 'medium', 'high'],
         default: 'medium',
     },
+    deadline: {
+        type: Date,
+        required: false,
+    }
 }, { timestamps: true });
 
 const subtaskModel = mongoose.model('Subtask', SubtaskSchema);
