@@ -1,21 +1,20 @@
 const mongoose = require('mongoose');
 
-const colors = ["red", "orange", "yellow", "green", "blue", "purple", "white", "brown", "black", "gray"];
-
 const CategorySchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-    },
-    color: {
-        type: String,
-        enum: colors,
-        default: 'red',
+        unique: true, // Ensure no duplicate categories
+        trim: true,
     },
     icon: {
         type: String,
-        default: 'default',
+        required: true,
     },
+    isSystemDefault: {
+        type: Boolean,
+        default: false, // True if it's a system-provided category
+    }
 }, { timestamps: true });
 
 const categoryModel = mongoose.model('Category', CategorySchema);

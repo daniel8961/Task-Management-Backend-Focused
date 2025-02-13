@@ -8,6 +8,7 @@ const subtaskSchema = joi.object({
     title: joi.string().min(1).max(300).required(),
     status: joi.boolean().optional(),
     priority: joi.string().valid('low', 'medium', 'high').optional(),
+    deadline: joi.date().optional()
 });
 
 // Create new subtask
@@ -21,6 +22,7 @@ const createSubtask = async (req, res) => {
             title: req.body.title,
             status: req.body.status,
             priority: req.body.priority,
+            deadline: req.body.deadline
         });
         // saved new subtask to MongoDB
         const savedSubtask = await newSubtask.save();
@@ -75,6 +77,7 @@ const updateSubtask = async (req, res) => {
                 title: req.body.title,
                 status: req.body.status,
                 priority: req.body.priority,
+                deadline: req.body.deadline
             },
             { new: true }
         );
