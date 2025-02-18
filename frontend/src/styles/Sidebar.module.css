@@ -1,0 +1,50 @@
+.overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: flex-end;
+}
+
+.sidebar {
+    width: 300px;
+    height: 100%;
+    background: white;
+    padding: 20px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.userSidebar {
+    background: #f8f9fa;
+}
+
+.closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.submitButton {
+    width: 100%;
+    padding: 10px;
+    background: blue;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+/* Mobile - Show as Popup */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 80%;
+        height: auto;
+        margin: auto;
+        border-radius: 10px;
+        transform: translateY(100%);
+    }
+}

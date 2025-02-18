@@ -1,23 +1,18 @@
-import './App.css';
+import { BrowserRouter as Router } from "react-router-dom";
+import { ThemeProvider } from "./context/ThemeContext";
+import { SidebarProvider } from "./context/SidebarContext";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <ThemeProvider> {/* Dark mode context */}
+            <SidebarProvider> {/* Sidebar state context */}
+                <Router>
+                    <Dashboard />
+                </Router>
+            </SidebarProvider>
+        </ThemeProvider>
+    );
 }
 
 export default App;
