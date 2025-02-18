@@ -1,24 +1,18 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Dashboard from './pages/Dashboard';
-import TaskView from './pages/Task/TaskView';
-import UserRegister from './pages/User/UserRegister';
-import CategoryView from './pages/Category/CategoryView';
-import './App.css';
+import { BrowserRouter as Router } from "react-router-dom";
+import { ThemeProvider } from "./context/ThemeContext";
+import { SidebarProvider } from "./context/SidebarContext";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
-  return (
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Dashboard />}>
-          <Route path="/" element={<TaskView />} />
-          <Route path="/category" element={<CategoryView />} />
-          <Route path="/register" element={<UserRegister />} />
-        </Route>
-      </Routes>
-    </Router>
-  );
+    return (
+        <ThemeProvider> {/* Dark mode context */}
+            <SidebarProvider> {/* Sidebar state context */}
+                <Router>
+                    <Dashboard />
+                </Router>
+            </SidebarProvider>
+        </ThemeProvider>
+    );
 }
 
 export default App;

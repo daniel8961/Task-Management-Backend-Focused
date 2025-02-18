@@ -1,0 +1,10 @@
+.dashboard {
+    background-color: white;
+    color: black;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.dark {
+    background-color: #121212;
+    color: white;
+}

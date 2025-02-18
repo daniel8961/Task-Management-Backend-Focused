@@ -15,14 +15,6 @@
     color: white;
   }
   
-  /* Logo */
-  .logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-decoration: none;
-    color: inherit;
-  }
-  
   /* Nav Links */
   .navLinks {
     display: flex;
