@@ -10,9 +10,9 @@ const Header = () => {
     return (
         <div className={`${styles.header} ${darkMode ? styles.dark : ""}`}>
             <Link to="/" className={styles.logo}>Do It Now</Link>
-            <button onClick={() => setDarkMode(!darkMode)} className={styles.toggleTheme}>
+            {/* <button onClick={() => setDarkMode(!darkMode)} className={styles.toggleTheme}>
                 {darkMode ? <FaSun /> : <FaMoon />}
-            </button>
+            </button> */}
         </div>
     );
 };

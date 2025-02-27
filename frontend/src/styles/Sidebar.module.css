@@ -15,6 +15,38 @@
     transition: transform 0.3s ease-in-out;
 }
 
+.form {
+    display: flex;
+    flex-direction: column; /* 🔥 Stack elements from top to bottom */
+    gap: 10px; /* 🔥 Adds space between input & select fields */
+}
+
+.form input {
+    width: 100%; /* 🔥 Makes them full-width */
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+.form select {
+    width: 100%; /* 🔥 Makes them full-width */
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+/* 🔥 Optional: Add focus effect */
+.form input:focus, 
+.form select:focus {
+    border-color: #4caf50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+
 .userSidebar {
     background: #f8f9fa;
 }
@@ -27,6 +59,10 @@
     background: none;
     font-size: 20px;
     cursor: pointer;
+}
+
+input {
+    border-bottom: 1px solid gray;
 }
 
 .submitButton {
