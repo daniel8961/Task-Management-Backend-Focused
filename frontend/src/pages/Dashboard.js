@@ -7,6 +7,8 @@ import Sidebar from '../components/Sidebar';
 import TaskView from './Task/TaskView';
 import styles from '../styles/Dashboard.module.css';
 import { ThemeContext } from '../context/ThemeContext';
+import CategoryView from './Category/CategoryView';
+import Profile from './User/Profile';
 
 const Dashboard = () => {
     const { darkMode } = useContext(ThemeContext);
@@ -14,9 +16,8 @@ const Dashboard = () => {
     return (
         <div className={`${styles.dashboard} ${darkMode ? styles.dark : ""}`}>
             <Header />
-            <Navbar />
             <div className={styles.content}>
-                <TaskView />
+                <Navbar />
                 <Sidebar />
             </div>
         </div>

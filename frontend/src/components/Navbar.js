@@ -1,27 +1,19 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
 import styles from "../styles/Navbar.module.css";
-import TaskView from "../pages/Task/TaskView";
-import CategoryView from "../pages/Category/CategoryView";
-import Profile from "../pages/User/Profile";
 import { ThemeContext } from "../context/ThemeContext";
 
 const Navbar = () => {
-    const [activeTab, setActiveTab] = useState("task");
     const { darkMode } = useContext(ThemeContext);
 
     return (
-        <div>
+        <div className={styles.container}>
+            <div className={styles.section}></div>
             <nav className={`${styles.navbar} ${darkMode ? styles.dark : ""}`}>
-                <button onClick={() => setActiveTab("category")} className={styles.navbarButton}>Categories</button>
-                <button onClick={() => setActiveTab("task")} className={styles.navbarButton}>Tasks</button>
-                <button onClick={() => setActiveTab("profile")} className={styles.navbarButton}>Profile</button>
+                <Link to="/category" className={styles.navbarButton}>Categories</Link>
+                <Link to="/task" className={styles.navbarButton}>Tasks</Link>
+                <Link to="/profile" className={styles.navbarButton}>Profile</Link>
             </nav>
-            <div className={styles.content}>
-                {activeTab === "category" && <CategoryView />}
-                {activeTab === "task" && <TaskView />}
-                {activeTab === "profile" && <Profile />}
-            </div>
-
         </div>
     );
 };

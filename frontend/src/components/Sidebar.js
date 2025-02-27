@@ -25,19 +25,23 @@ const Sidebar = () => {
                 <button className={styles.closeButton} onClick={closeSidebar}>✖</button>
 
                 {sidebarType === "task" && (
-                    <>
+                    <div className={styles.form}>
                         <h2>Edit Task</h2>
-                        <input type="text" value={data.title || ""} onChange={(e) => setData({ ...data, title: e.target.value })} />
-                        <select value={data.status || "incomplete"} onChange={(e) => setData({ ...data, status: e.target.value })}>
+                        <input type="text" value={data.title || ""} placeholder="Enter Task" onChange={(e) => setData({ ...data, title: e.target.value })} />
+                        {/* <br /> */}
+                        <select value={data.status || ""} onChange={(e) => setData({ ...data, status: e.target.value })}>
+                            <option value="" disabled>-- Select Status --</option>
                             <option value="incomplete">Incomplete</option>
                             <option value="complete">Complete</option>
                         </select>
-                        <select value={data.priority || "low"} onChange={(e) => setData({ ...data, priority: e.target.value })}>
+                        {/* <br /> */}
+                        <select value={data.priority || ""} onChange={(e) => setData({ ...data, priority: e.target.value })}>
+                            <option value="" disabled>-- Select Priority --</option>
                             <option value="low">Low</option>
                             <option value="medium">Medium</option>
                             <option value="high">High</option>
                         </select>
-                    </>
+                    </div>
                 )}
 
                 {sidebarType === "category" && (
